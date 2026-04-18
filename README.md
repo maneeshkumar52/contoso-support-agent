@@ -1,15 +1,28 @@
 # Contoso Support Agent
 
-Multi-agent customer support system with dedicated triage, draft, resolution, and orchestration services.
+Professional-grade multi-service support platform with dedicated triage, draft, resolution, and orchestration services.
 
-## Architecture
+## 1. Executive Overview
 
-- Triage Agent: classifies incoming support requests
-- Draft Agent: proposes response drafts and resolution paths
-- Resolution Agent: finalizes actionable responses
-- Orchestrator: coordinates service-to-service workflow and returns unified output
+This repository provides:
+- Specialized microservices for support lifecycle stages
+- Central orchestrator for service composition
+- Clear service boundaries for scale and resilience
 
-## Repository Structure
+## 2. Architecture
+
+```txt
+Client
+  |
+  v
+Orchestrator Service (8000)
+  |
+  +--> Triage Service (8001)
+  +--> Draft Service (8002)
+  +--> Resolution Service (8003)
+```
+
+## 3. Repository Structure
 
 ```txt
 contoso-support-agent/
@@ -22,63 +35,51 @@ contoso-support-agent/
   requirements.txt
 ```
 
-## Prerequisites
+## 4. Prerequisites
 
 - Python 3.10+
 - pip 23+
+- Git
 
-## Setup and Execution
-
-1. Clone and enter repository
+## 5. Local Setup
 
 ```bash
 git clone https://github.com/maneeshkumar52/contoso-support-agent.git
 cd contoso-support-agent
-```
-
-2. Create virtual environment
-
-```bash
 python3 -m venv .venv
 source .venv/bin/activate
-```
-
-3. Install dependencies
-
-```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4. Run services (four terminals)
+## 6. Run Services (four terminals)
 
 ```bash
-uvicorn triage_agent.main:app --port 8001 --reload
-uvicorn draft_agent.main:app --port 8002 --reload
-uvicorn resolution_agent.main:app --port 8003 --reload
-uvicorn orchestrator.main:app --port 8000 --reload
+uvicorn triage_agent.main:app --host 0.0.0.0 --port 8001 --reload
+uvicorn draft_agent.main:app --host 0.0.0.0 --port 8002 --reload
+uvicorn resolution_agent.main:app --host 0.0.0.0 --port 8003 --reload
+uvicorn orchestrator.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-5. Validate
+## 7. Validation
 
 - Orchestrator docs: http://127.0.0.1:8000/docs
 - Triage docs: http://127.0.0.1:8001/docs
 - Draft docs: http://127.0.0.1:8002/docs
 - Resolution docs: http://127.0.0.1:8003/docs
 
-## Testing
-
 ```bash
+python3 -m compileall -q .
 pytest -q
 python demo_e2e.py
 ```
 
-## Troubleshooting
+## 8. Troubleshooting
 
-- Inter-service call failures: ensure all four services are running
-- Port conflicts: reassign ports and update orchestrator configuration
-- Startup import errors: activate virtual environment before launch
+- Inter-service failures: ensure all four services are running
+- Port conflicts: adjust port mappings consistently
+- Import errors: activate virtual environment before launch
 
-## License
+## 9. License
 
-See `LICENSE` in this repository.
+See LICENSE in this repository.
